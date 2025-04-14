@@ -4,7 +4,7 @@ import Screen from "./Screen";
 import KeyBoard from "./KeyBoard";
 import { getLanguage } from "./data/LanguagesData";
 import "../css/KeyBoardStylee.css";
-import EmojiKeyBoard from "./EmojiKeyBoard";
+import EmojiKeyBoard from "./emoji/EmojiKeyBoard";
 
 // Initial language setup
 const initialLanguage = getLanguage("english");
