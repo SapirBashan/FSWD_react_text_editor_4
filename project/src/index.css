@@ -1,0 +1,6 @@
+body{
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family:  'Arial Narrow Bold', sans-serif;
+  background-image: url(./assets/images/backgroundImage.jpg);
+}
