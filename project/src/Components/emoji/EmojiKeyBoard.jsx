@@ -1,5 +1,6 @@
 import { useEmojiData } from "../data/useEmojiData";
 import EmojiCategory from "./components/EmojiCategory";
+import "./EmojiKeyBoard.css";
 
 /**
  * EmojiKeyBoard Component

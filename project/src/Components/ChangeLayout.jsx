@@ -18,9 +18,9 @@ import React from 'react';
  * - Displays a button to toggle between the emoji keyboard and the virtual keyboard.
  * - The button icon changes based on the `isEmojiActive` prop.
  */
-function KeyBoardLanguage(props) {
+function ChangeLayout(props) {
   const setLanguage = props.setLanguage;
-  const handleChange = (event) =>  setLanguage(event.target.value);
+  const handleChange = (event) => setLanguage(event.target.value);
   return (
     <div className='language-and-icons'>
       <select className='chooseLanguage' onChange={handleChange}>
@@ -33,7 +33,7 @@ function KeyBoardLanguage(props) {
       {props.isEmojiActive ? (
 
         <button className="icon" onClick={props.changeState}>
-
+          <img src={emojiButton} alt='Emoji Keyboard' />
         </button>
       ) : (
         <button className='icon' onClick={props.changeState}>
@@ -44,4 +44,4 @@ function KeyBoardLanguage(props) {
   );
 }
 
-export default KeyBoardLanguage;
+export default ChangeLayout;

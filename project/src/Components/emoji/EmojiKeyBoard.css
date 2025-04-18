@@ -1,0 +1,31 @@
+.emoji-keyboard {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--vk-color-board);
+  width: var(--vk-max-width);
+  height: var(--vk-max-height);
+  overflow-y: scroll;
+}
+
+.emoji-keyboard button {
+  background-color: var(--vk-color-key);
+  border: none;
+  border-radius: 4px;
+  margin: 4px;
+  width: 50px;
+  height: 60px;
+  padding: 12px;
+  cursor: pointer;
+  box-shadow: 12px 9px 8px -3px rgba(0, 0, 0, 0.1);
+  transition: .3s;
+}
+
+.emoji-keyboard button:hover {
+  background-color: var(--vk-color-key-hover);
+}
+
+.emoji-keyboard button:active {
+  background-color: var(--vk-color-key-active);
+  box-shadow: 7px 5px 4px -3px rgba(0, 0, 0, 0.1);
+  transform: scale(0.95);
+}

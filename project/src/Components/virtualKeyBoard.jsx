@@ -1,5 +1,5 @@
 import { useState } from "react";
-import KeyBoardLanguage from "./KeyBoardLanguage";
+import ChangeLayout from "./ChangeLayout";
 import Screen from "./Screen";
 import KeyBoard from "./KeyBoard";
 import { getLanguage } from "./data/LanguagesData";
@@ -67,7 +67,7 @@ function VirtualKeyBoard() {
     return (
         <div className="main-container">
             <div className="change_layout">
-                <KeyBoardLanguage
+                <ChangeLayout
                     setLanguage={changeLanguage}
                     changeState={toggleEmojiActive}
                     isEmojiActive={emojiActive}
