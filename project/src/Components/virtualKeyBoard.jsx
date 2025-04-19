@@ -1,12 +1,12 @@
 import { useState } from "react";
 import ChangeLayout from "./ChangeLayout";
 import Screen from "./Screen";
-import KeyBoard from "./KeyBoard";
+import KeyBoard from "./keyBoard/KeyBoard";
 import { getLanguage } from "./data/LanguagesData";
 import "../css/KeyBoardStylee.css";
 import EmojiKeyBoard from "./emoji/EmojiKeyBoard";
+import StyleSelector from "./StyleSelector";
 
-// Initial language setup
 const initialLanguage = getLanguage("english");
 
 function VirtualKeyBoard() {
@@ -19,12 +19,17 @@ function VirtualKeyBoard() {
     const [emojiActive, setEmojiActive] = useState(false);
     const [isShift, setIsShift] = useState(false);
 
-    // Toggle emoji keyboard state
+    // State for text styles
+    const [currentStyle, setCurrentStyle] = useState({
+        fontFamily: "Arial",
+        fontSize: "16px",
+        color: "#000000",
+    });
+
     const toggleEmojiActive = () => {
         setEmojiActive((prev) => !prev);
     };
 
-    // Delete the last character from the stack
     const deleteLastChar = () => {
         setStack((prevStack) => {
             const newStack = [...prevStack];
@@ -35,7 +40,6 @@ function VirtualKeyBoard() {
         });
     };
 
-    // Change the language of the keyboard
     const changeLanguage = (language) => {
         const newLanguage = getLanguage(language) || initialLanguage;
         setIso6392(newLanguage.iso_639_2);
@@ -45,24 +49,29 @@ function VirtualKeyBoard() {
         setPlaceholder(newLanguage.placeholder);
     };
 
-    // Handle input button clicks
     const handleInputButtonClick = (char) => {
         setStack((prevStack) => {
-            const newStack = [...prevStack]; // Copy the previous stack
-            const lastItem = [...newStack[newStack.length - 1]]; // 
-            lastItem.push({ char, style: {} });
+            const newStack = [...prevStack];
+            const lastItem = [...newStack[newStack.length - 1]];
+            lastItem.push({ char, style: currentStyle }); // Apply current style to the character
             newStack[newStack.length - 1] = lastItem;
             return newStack;
         });
     };
 
-    // Handle special key events
     const handleEvent = (event) => {
         if (event === "backspace") {
             deleteLastChar();
         }
     };
 
+    // Update the current style
+    const handleStyleChange = (styleKey, value) => {
+        setCurrentStyle((prevStyle) => ({
+            ...prevStyle,
+            [styleKey]: value,
+        }));
+    };
 
     return (
         <div className="main-container">
@@ -95,6 +104,7 @@ function VirtualKeyBoard() {
                     handleEvent={handleEvent}
                 />
             )}
+            <StyleSelector onSelectStyle={handleStyleChange} />
         </div>
     );
 }

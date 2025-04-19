@@ -140,6 +140,8 @@ select {
   user-select: text;
   width: 100%;
   z-index: 3;
+
+  /* border: 2px solid rgb(3, 3, 3); */
 }
 
 .DivTextArea.center {
