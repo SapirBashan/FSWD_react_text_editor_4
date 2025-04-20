@@ -1,18 +1,11 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import VirtualKeyBoard from './Components/virtualKeyBoard';
 import Login from './Components/Login';
 
 function App() {
-  const [user, setUser] = useState(null);
-
-  // Load user from localStorage when app starts
-  useEffect(() => {
-    const savedUser = localStorage.getItem("activeUser");
-    if (savedUser) {
-      setUser(savedUser);
-    }
-  }, []);
+  // Load user from localStorage directly during initialization
+  const [user, setUser] = useState(localStorage.getItem("activeUser"));
 
   // If user is not set, show login screen
   if (!user) {
