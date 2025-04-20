@@ -23,6 +23,10 @@ function RenderNonLiteralKey({ item, index, displayText, handleEvent, handleButt
     'key-tab': () => handleButtonClick('\u00A0\u00A0\u00A0\u00A0'),
     'key-rCursor': () => handleEvent('rightCursor'),
     'key-lCursor': () => handleEvent('leftCursor'),
+    'key-Emojis': () => handleEvent('emojis'),
+    'key-Select_all': () => handleEvent('selectAll'),
+    'key-language': () => handleEvent('changeLanguage'),
+    'key-backwards': () => handleEvent('backwards'),
   };
 
   const action = keyActions[item[0]];

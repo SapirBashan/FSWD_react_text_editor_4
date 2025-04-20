@@ -1,5 +1,4 @@
 import { useState } from "react";
-import ChangeLayout from "./ChangeLayout";
 import Screen from "./Screen";
 import KeyBoard from "./keyBoard/KeyBoard";
 import { getLanguage } from "./data/LanguagesData";
@@ -74,6 +73,7 @@ function VirtualKeyBoard({ activeUser }) {
       return newStack;
     });
 
+    setEmojiActive(false); // Close emoji keyboard if open
     setCursorPosition((prev) => prev + 1);
   };
 
@@ -89,6 +89,14 @@ function VirtualKeyBoard({ activeUser }) {
         Math.min(prev + 1, stack[stack.length - 1].length)
       );
     }
+    if (event === "changeLanguage") {
+      const nextLanguage = iso_639_2 === "eng" ? "Hebrew" : "English";
+      changeLanguage(nextLanguage);
+    }
+    if (event === "emojis") {
+      toggleEmojiActive();
+    }
+
   };
 
   const handleStyleChange = (styleKey, value) => {
@@ -105,11 +113,6 @@ function VirtualKeyBoard({ activeUser }) {
           getText={getText}
           setStackFromFile={setStackFromFile}
           activeUser={activeUser}
-        />
-        <ChangeLayout
-          setLanguage={changeLanguage}
-          changeState={toggleEmojiActive}
-          isEmojiActive={emojiActive}
         />
       </div>
       <div className="search-bar">
