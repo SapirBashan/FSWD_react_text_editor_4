@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Screen from "./Screen";
 import KeyBoard from "./keyBoard/KeyBoard";
 import { getLanguage } from "./data/LanguagesData";
@@ -19,6 +19,7 @@ function VirtualKeyBoard({ activeUser }) {
   const [cursorPosition, setCursorPosition] = useState(0);
   const [emojiActive, setEmojiActive] = useState(false);
   const [isShift, setIsShift] = useState(false);
+  const [isCapsLock, setIsCapsLock] = useState(false); // New state for Caps Lock
   const [currentStyle, setCurrentStyle] = useState({
     fontFamily: "Arial",
     fontSize: "16px",
@@ -96,7 +97,6 @@ function VirtualKeyBoard({ activeUser }) {
     if (event === "emojis") {
       toggleEmojiActive();
     }
-
   };
 
   const handleStyleChange = (styleKey, value) => {
@@ -105,6 +105,38 @@ function VirtualKeyBoard({ activeUser }) {
       [styleKey]: value,
     }));
   };
+
+    
+    // Add event listener for physical keyboard input
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Backspace") {
+        deleteChar();
+      } else if (e.key === "ArrowLeft") {
+        setCursorPosition((prev) => Math.max(prev - 1, 0));
+      } else if (e.key === "ArrowRight") {
+        setCursorPosition((prev) =>
+          Math.min(prev + 1, stack[stack.length - 1].length)
+        );
+      } else if (e.key === "CapsLock") {
+        setIsCapsLock((prev) => !prev); // Toggle Caps Lock state
+      } else if (e.key === "Shift" && e.altKey) {
+        // Handle Alt + Shift for language change
+        const nextLanguage = iso_639_2 === "eng" ? "Hebrew" : "English";
+        changeLanguage(nextLanguage);
+      } else if (e.key.length === 1) {
+        // Handle printable characters
+        const char = isCapsLock || isShift ? e.key.toUpperCase() : e.key.toLowerCase();
+        handleInputButtonClick(char);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [cursorPosition, stack, currentStyle, isCapsLock, isShift, iso_639_2]);
 
   return (
     <div className="main-container">
