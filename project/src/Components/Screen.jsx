@@ -104,14 +104,16 @@ function Screen({ text, searchQuery, cursorPosition }) {
 
     // Iterate through the highlighted text and insert the cursor at the correct position
     textJsx.forEach((element, index) => {
-      result.push(element); // Add the current text element
-
       // If the cursorPosition matches the current index, insert the cursor
       if (index === cursorPosition) {
         result.push(
           <span key="cursor" className="cursor"></span>
         );
       }
+
+      result.push(element); // Add the current text element
+
+
     });
 
     // If the cursorPosition is at the end of the text, add the cursor at the end
