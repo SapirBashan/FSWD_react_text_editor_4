@@ -8,7 +8,7 @@ const languagesData = [
       [["key-tab", "tab"], ["", "q", "Q"], ["", "w", "W"], ["", "e", "E"], ["", "r", "R"], ["", "t", "T"], ["", "y", "Y"], ["", "u", "U"], ["", "i", "I"], ["", "o", "O"], ["", "p", "P"], ["", "[", "{"], ["", "]", "}"], ["key-fwslash", "\\", "|"]],
       [["key-caps", "caps"], ["", "a", "A"], ["", "s", "S"], ["", "d", "D"], ["", "f", "F"], ["", "g", "G"], ["", "h", "H"], ["", "j", "J"], ["", "k", "K"], ["", "l", "L"], ["", ";", ":"], ["", "'", "\""], ["key-return", "↵"]],
       [["key-lshift", "shift"], ["", "z", "Z"], ["", "x", "X"], ["", "c", "C"], ["", "v", "V"], ["", "b", "B"], ["", "n", "N"], ["", "m", "M"], ["", ",", "<"], ["", ".", ">"], ["", "/", "?"], ["key-rshift", "shift"]],
-      [["key-lctrl", "ctrl"], ["key-lwin", "⊞"], ["key-lalt", "alt"], ["key-spc", "space"], ["key-ralt", "alt"], ["key-rwin", "⊞"], ["key-rctrl", "ctrl"]]
+      [["key-backwards", "↶"], ["key-language", "🌐"], ["key-Emojis", "😊"], ["key-spc", "space"], ["key-Select_all", "all"], ["key-lCursor", "⬅"], ["key-rCursor", "➡"]]
     ],
     placeholder: "type here"
   },
@@ -21,7 +21,7 @@ const languagesData = [
       [["key-tab", "tab"], ["", "/"], ["", "'"], ["", "ק"], ["", "ר"], ["", "א"], ["", "ט"], ["", "ו"], ["", "ן"], ["", "ם"], ["", "פ"], ["", "[", "{"], ["", "]", "}"], ["key-fwslash", "\\", "|"]],
       [["key-caps", "caps"], ["", "ש"], ["", "ד"], ["", "ג"], ["", "כ"], ["", "ע"], ["", "י"], ["", "ח"], ["", "ל"], ["", "ך"], ["", "ף"], ["", "."], ["key-return", "↵"]],
       [["key-lshift", "shift"], ["", "ז"], ["", "ס"], ["", "ב"], ["", "ה"], ["", "נ"], ["", "מ"], ["", "צ"], ["", "ת"], ["", ","], ["", "?"], ["key-rshift", "shift"]],
-      [["key-lctrl", "ctrl"], ["key-lwin", "⊞"], ["key-lalt", "alt"], ["key-spc", "space"], ["key-ralt", "alt"], ["key-rwin", "⊞"], ["key-rctrl", "ctrl"]]
+      [["key-backwards", "↶"], ["key-language", "🌐"], ["key-Emojis", "😊"], ["key-spc", "space"], ["key-Select_all", "all"], ["key-lCursor", "⬅"], ["key-rCursor", "➡"]]
     ],
     placeholder: "הקלד כאן"
   }

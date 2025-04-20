@@ -1,5 +1,6 @@
 import React from 'react';
 import RenderRow from './RenderRow';
+import './KeyBoard.css'; 
 
 /**
  * KeyBoard Component
@@ -14,7 +15,6 @@ import RenderRow from './RenderRow';
  * - handleEvent: A function to handle special key events (e.g., backspace, tab).
  */
 function KeyBoard({ langCode, keyList, isShift, ...props }) {
-    console.log('KeyBoard', isShift);
     return (
         <div id="vk-board" className={`lang-${langCode}`}>
             {keyList && keyList.map((row, rowIndex) => (

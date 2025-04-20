@@ -1,0 +1,86 @@
+#vk-board {
+    background-color: var(--vk-color-board);
+    height: var(--vk-max-height);
+    padding: 12px;
+    user-select: none;
+  }
+  
+  #vk-board .key {
+    align-items: center;
+    background-color: var(--vk-color-key);
+    border-radius: 4px;
+    border: none;
+    display: flex;
+    height: 50px;
+    justify-content: center;
+    margin: 4px;
+    transition: .3s;
+    width: 50px;
+    box-shadow: 12px 9px 8px -3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+  
+  #vk-board .key:hover {
+    background-color: var(--vk-color-key-hover);
+  }
+  
+  #vk-board .key:active {
+    background-color: var(--vk-color-key-active);
+    box-shadow: 7px 5px 4px -3px rgba(0, 0, 0, 0.1);
+    transform: scale(0.95);
+  }
+  
+  #vk-board .key.highlighted,
+  #vk-board .key:active {
+    background-color: var(--vk-color-key-active);
+  }
+  
+  #vk-board .key.key-bspc {
+    width: 94px;
+  }
+  
+  #vk-board .key.key-tab {
+    width: 74px;
+  }
+  
+  #vk-board .key.key-fwslash {
+    width: 70px;
+  }
+  
+  #vk-board .key.key-caps {
+    width: 82px;
+  }
+  
+  #vk-board .key.key-return {
+    width: 120px;
+    font-size: 1.5rem;
+  }
+  
+  #vk-board .key.key-lshift {
+    width: 110px;
+  }
+  
+  #vk-board .key.key-rshift {
+    width: 150px;
+  }
+  
+  #vk-board .key.key-spc {
+    width: 326px;
+  }
+  
+  #vk-board .key.key-Emojis,
+  #vk-board .key.key-Select_all,
+  #vk-board .key.key-language,
+  #vk-board .key.key-lCursor,
+  #vk-board .key.key-backwards,
+  #vk-board .key.key-rCursor {
+    width: 79px;
+  }
+  
+  #vk-board.lang-mkd .key.key-caps {
+    width: 62px;
+  }
+  
+  #vk-board.lang-mkd .key.key-return {
+    width: 82px;
+  }

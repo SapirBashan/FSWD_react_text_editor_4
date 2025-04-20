@@ -11,12 +11,12 @@ export const nonLiterals = [
     'key-return',
     'key-lshift',
     'key-rshift',
-    'key-lalt',
-    'key-ralt',
-    'key-lwin',
-    'key-rwin',
-    'key-lctrl',
-    'key-rctrl',
+    'key-Emojis',
+    'key-Select_all',
+    'key-language',
+    'key-lCursor',
+    'key-backwards',
+    'key-rCursor',
     'key-spc',
 ];
 
@@ -31,7 +31,6 @@ export const nonLiterals = [
  * - Other props are passed down to key rendering functions.
  */
 function RenderRow({ row, rowIndex, isShift, ...props }) {
-    console.log('RenderRow', isShift);
     return (
         <div key={rowIndex} className="d-flex justify-center">
             {row.map((item, index) => {

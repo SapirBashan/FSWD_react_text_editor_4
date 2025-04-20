@@ -13,7 +13,6 @@ import React from 'react';
  * - isShift: Boolean indicating whether the Shift key is active.
  */
 function RenderNonLiteralKey({ item, index, displayText, handleEvent, handleButtonClick, setisShift, isShift }) {
-  console.log('RenderNonLiteralKey', isShift);
   const keyActions = {
     'key-bspc': () => handleEvent('backspace'),
     'key-caps': () => setisShift(!isShift),
@@ -22,6 +21,8 @@ function RenderNonLiteralKey({ item, index, displayText, handleEvent, handleButt
     'key-return': () => handleButtonClick('\n'),
     'key-spc': () => handleButtonClick('\xa0'),
     'key-tab': () => handleButtonClick('\u00A0\u00A0\u00A0\u00A0'),
+    'key-rCursor': () => handleEvent('rightCursor'),
+    'key-lCursor': () => handleEvent('leftCursor'),
   };
 
   const action = keyActions[item[0]];
