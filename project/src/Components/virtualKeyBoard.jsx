@@ -27,6 +27,7 @@ function VirtualKeyBoard({ activeUser }) {
   });
   const [searchQuery, setSearchQuery] = useState("");
 
+  
   const getText = () => stack[stack.length - 1];
 
   const setStackFromFile = (loadedData) => {
