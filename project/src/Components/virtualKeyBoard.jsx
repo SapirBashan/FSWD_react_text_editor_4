@@ -6,6 +6,7 @@ import "../css/KeyBoardStylee.css";
 import EmojiKeyBoard from "./emoji/EmojiKeyBoard";
 import StyleSelector from "./StyleSelector";
 import FileManager from "./FileManager";
+import TabScreen from "./TabScreen";
 
 const initialLanguage = getLanguage("english");
 
@@ -16,6 +17,7 @@ function VirtualKeyBoard({ activeUser }) {
   const [keyList, setKeyList] = useState(initialLanguage.keyList);
   const [placeholder, setPlaceholder] = useState(initialLanguage.placeholder);
   const [stack, setStack] = useState([[]]);
+  const [focus, setFocus] = useState(0);
   const [cursorPosition, setCursorPosition] = useState(0);
   const [emojiActive, setEmojiActive] = useState(false);
   const [isShift, setIsShift] = useState(false);
@@ -27,11 +29,12 @@ function VirtualKeyBoard({ activeUser }) {
   });
   const [searchQuery, setSearchQuery] = useState("");
 
-  
-  const getText = () => stack[stack.length - 1];
+
+  const getText = () => stack[focus];
 
   const setStackFromFile = (loadedData) => {
     setStack([loadedData]);
+    setFocus(0);
     setCursorPosition(loadedData.length);
   };
 
@@ -42,13 +45,13 @@ function VirtualKeyBoard({ activeUser }) {
   const deleteChar = () => {
     setStack((prevStack) => {
       const newStack = [...prevStack];
-      const lastItem = [...newStack[newStack.length - 1]];
+      const lastItem = [...newStack[focus]];
 
       if (cursorPosition > 0) {
         lastItem.splice(cursorPosition - 1, 1);
       }
 
-      newStack[newStack.length - 1] = lastItem;
+      newStack[focus] = lastItem;
       return newStack;
     });
 
@@ -69,9 +72,9 @@ function VirtualKeyBoard({ activeUser }) {
   const handleInputButtonClick = (char) => {
     setStack((prevStack) => {
       const newStack = [...prevStack];
-      const lastItem = [...newStack[newStack.length - 1]];
+      const lastItem = [...newStack[focus]];
       lastItem.splice(cursorPosition, 0, { char, style: currentStyle });
-      newStack[newStack.length - 1] = lastItem;
+      newStack[focus] = lastItem;
       return newStack;
     });
 
@@ -88,7 +91,7 @@ function VirtualKeyBoard({ activeUser }) {
     }
     if (event === "rightCursor") {
       setCursorPosition((prev) =>
-        Math.min(prev + 1, stack[stack.length - 1].length)
+        Math.min(prev + 1, stack[focus].length)
       );
     }
     if (event === "changeLanguage") {
@@ -107,37 +110,37 @@ function VirtualKeyBoard({ activeUser }) {
     }));
   };
 
-    
-    // Add event listener for physical keyboard input
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Backspace") {
-        deleteChar();
-      } else if (e.key === "ArrowLeft") {
-        setCursorPosition((prev) => Math.max(prev - 1, 0));
-      } else if (e.key === "ArrowRight") {
-        setCursorPosition((prev) =>
-          Math.min(prev + 1, stack[stack.length - 1].length)
-        );
-      } else if (e.key === "CapsLock") {
-        setIsCapsLock((prev) => !prev); // Toggle Caps Lock state
-      } else if (e.key === "Shift" && e.altKey) {
-        // Handle Alt + Shift for language change
-        const nextLanguage = iso_639_2 === "eng" ? "Hebrew" : "English";
-        changeLanguage(nextLanguage);
-      } else if (e.key.length === 1) {
-        // Handle printable characters
-        const char = isCapsLock || isShift ? e.key.toUpperCase() : e.key.toLowerCase();
-        handleInputButtonClick(char);
-      }
-    };
 
-    window.addEventListener("keydown", handleKeyDown);
+  //   // Add event listener for physical keyboard input
+  // useEffect(() => {
+  //   const handleKeyDown = (e) => {
+  //     if (e.key === "Backspace") {
+  //       deleteChar();
+  //     } else if (e.key === "ArrowLeft") {
+  //       setCursorPosition((prev) => Math.max(prev - 1, 0));
+  //     } else if (e.key === "ArrowRight") {
+  //       setCursorPosition((prev) =>
+  //         Math.min(prev + 1, stack[stack.length - 1].length)
+  //       );
+  //     } else if (e.key === "CapsLock") {
+  //       setIsCapsLock((prev) => !prev); // Toggle Caps Lock state
+  //     } else if (e.key === "Shift" && e.altKey) {
+  //       // Handle Alt + Shift for language change
+  //       const nextLanguage = iso_639_2 === "eng" ? "Hebrew" : "English";
+  //       changeLanguage(nextLanguage);
+  //     } else if (e.key.length === 1) {
+  //       // Handle printable characters
+  //       const char = isCapsLock || isShift ? e.key.toUpperCase() : e.key.toLowerCase();
+  //       handleInputButtonClick(char);
+  //     }
+  //   };
 
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [cursorPosition, stack, currentStyle, isCapsLock, isShift, iso_639_2]);
+  //   window.addEventListener("keydown", handleKeyDown);
+
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, [cursorPosition, stack, currentStyle, isCapsLock, isShift, iso_639_2]);
 
   return (
     <div className="main-container">
@@ -157,14 +160,13 @@ function VirtualKeyBoard({ activeUser }) {
         />
       </div>
       <div className="screenDiv">
-        <Screen
-          text={
-            stack.length && stack[stack.length - 1].length
-              ? stack[stack.length - 1]
-              : placeholder
-          }
+        <TabScreen
+          text={stack}
+          setText={setStack} //to do
           searchQuery={searchQuery}
           cursorPosition={cursorPosition}
+          focus={focus}
+          setFocus={setFocus}
         />
       </div>
       {emojiActive ? (
