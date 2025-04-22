@@ -83,6 +83,15 @@ function VirtualKeyBoard({ activeUser }) {
     }
   };
 
+  const changeLanguage = (lang) => {
+    const newLanguage = getLanguage(lang.toLowerCase());
+    setIso6392(newLanguage.iso_639_2);
+    setLanguageName(newLanguage.languageName);
+    setTranslatedName(newLanguage.translatedName);
+    setKeyList(newLanguage.keyList);
+    setPlaceholder(newLanguage.placeholder);
+  };
+
   const handleEvent = (event) => {
     if (event === "backspace") {
       deleteChar();
