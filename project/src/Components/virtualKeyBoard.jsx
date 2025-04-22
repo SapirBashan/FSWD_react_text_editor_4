@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Screen from "./Screen";
 import KeyBoard from "./keyBoard/KeyBoard";
 import { getLanguage } from "./data/LanguagesData";
 import "../css/KeyBoardStylee.css";
@@ -7,6 +6,7 @@ import EmojiKeyBoard from "./emoji/EmojiKeyBoard";
 import StyleSelector from "./StyleSelector";
 import FileManager from "./FileManager";
 import TabScreen from "./TabScreen";
+import SearchBar from "./SearchBar";
 
 const initialLanguage = getLanguage("english");
 
@@ -22,11 +22,7 @@ function VirtualKeyBoard({ activeUser }) {
   const [emojiActive, setEmojiActive] = useState(false);
   const [isShift, setIsShift] = useState(false);
   const [isCapsLock, setIsCapsLock] = useState(false); // New state for Caps Lock
-  const [currentStyle, setCurrentStyle] = useState({
-    fontFamily: "Arial",
-    fontSize: "16px",
-    color: "#000000",
-  });
+  const [currentStyle, setCurrentStyle] = useState({fontFamily: "Arial",fontSize: "16px",color: "#000000",});
   const [searchQuery, setSearchQuery] = useState("");
 
 
@@ -152,17 +148,18 @@ function VirtualKeyBoard({ activeUser }) {
         />
       </div>
       <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search for a word..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+        <SearchBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          Stack={stack}
+          setStack={setStack}
+          focus={focus}
         />
       </div>
       <div className="screenDiv">
         <TabScreen
           text={stack}
-          setText={setStack} //to do
+          setText={setStack} 
           searchQuery={searchQuery}
           cursorPosition={cursorPosition}
           focus={focus}

@@ -32,7 +32,7 @@ function Screen({ text, searchQuery, cursorPosition }) {
       );
     }
 
-    const queryLength = searchQuery.length;
+    const queryLength = searchQuery.length; 
     const result = [];
     let buffer = ''; // Buffer to collect non-matching characters
     let bufferStyle = null; // Style for the buffer
