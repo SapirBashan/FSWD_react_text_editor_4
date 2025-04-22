@@ -17,11 +17,12 @@ function VirtualKeyBoard({ activeUser }) {
   const [keyList, setKeyList] = useState(initialLanguage.keyList);
   const [placeholder, setPlaceholder] = useState(initialLanguage.placeholder);
   const [stack, setStack] = useState([[]]);
+  const [history, setHistory] = useState([]); // History for undo functionality
   const [focus, setFocus] = useState(0);
   const [cursorPosition, setCursorPosition] = useState(0);
   const [emojiActive, setEmojiActive] = useState(false);
   const [isShift, setIsShift] = useState(false);
-  const [isCapsLock, setIsCapsLock] = useState(false); // New state for Caps Lock
+  const [isCapsLock, setIsCapsLock] = useState(false);
   const [currentStyle, setCurrentStyle] = useState({
     fontFamily: "Arial",
     fontSize: "16px",
@@ -29,10 +30,10 @@ function VirtualKeyBoard({ activeUser }) {
   });
   const [searchQuery, setSearchQuery] = useState("");
 
-
   const getText = () => stack[focus];
 
   const setStackFromFile = (loadedData) => {
+    setHistory([]); // Clear history when loading a new file
     setStack([loadedData]);
     setFocus(0);
     setCursorPosition(loadedData.length);
@@ -43,6 +44,7 @@ function VirtualKeyBoard({ activeUser }) {
   };
 
   const deleteChar = () => {
+    setHistory((prevHistory) => [...prevHistory, [...stack]]); // Save current state to history
     setStack((prevStack) => {
       const newStack = [...prevStack];
       const lastItem = [...newStack[focus]];
@@ -60,16 +62,8 @@ function VirtualKeyBoard({ activeUser }) {
     }
   };
 
-  const changeLanguage = (language) => {
-    const newLanguage = getLanguage(language) || initialLanguage;
-    setIso6392(newLanguage.iso_639_2);
-    setLanguageName(newLanguage.languageName);
-    setTranslatedName(newLanguage.translatedName);
-    setKeyList(newLanguage.keyList);
-    setPlaceholder(newLanguage.placeholder);
-  };
-
   const handleInputButtonClick = (char) => {
+    setHistory((prevHistory) => [...prevHistory, [...stack]]); // Save current state to history
     setStack((prevStack) => {
       const newStack = [...prevStack];
       const lastItem = [...newStack[focus]];
@@ -80,6 +74,17 @@ function VirtualKeyBoard({ activeUser }) {
 
     setEmojiActive(false); // Close emoji keyboard if open
     setCursorPosition((prev) => prev + 1);
+  };
+
+  const undo = () => {
+    if (history.length > 0) {
+      const previousState = history[history.length - 1];
+      setHistory((prevHistory) => prevHistory.slice(0, -1)); // Remove the last state from history
+      setStack(previousState);
+      setCursorPosition(previousState[focus]?.length || 0); // Adjust cursor position
+    } else {
+      alert("Nothing to undo!");
+    }
   };
 
   const handleEvent = (event) => {
@@ -101,6 +106,9 @@ function VirtualKeyBoard({ activeUser }) {
     if (event === "emojis") {
       toggleEmojiActive();
     }
+    if (event === "backwards") {
+      undo();
+    }
   };
 
   const handleStyleChange = (styleKey, value) => {
@@ -110,8 +118,6 @@ function VirtualKeyBoard({ activeUser }) {
     }));
   };
 
-
-  //   // Add event listener for physical keyboard input
   // useEffect(() => {
   //   const handleKeyDown = (e) => {
   //     if (e.key === "Backspace") {
@@ -123,13 +129,13 @@ function VirtualKeyBoard({ activeUser }) {
   //         Math.min(prev + 1, stack[stack.length - 1].length)
   //       );
   //     } else if (e.key === "CapsLock") {
-  //       setIsCapsLock((prev) => !prev); // Toggle Caps Lock state
+  //       setIsCapsLock((prev) => !prev);
   //     } else if (e.key === "Shift" && e.altKey) {
-  //       // Handle Alt + Shift for language change
   //       const nextLanguage = iso_639_2 === "eng" ? "Hebrew" : "English";
   //       changeLanguage(nextLanguage);
+  //     } else if ((e.key === "z" && e.ctrlKey )) {
+  //       undo(); // Handle Ctrl+Z for undo
   //     } else if (e.key.length === 1) {
-  //       // Handle printable characters
   //       const char = isCapsLock || isShift ? e.key.toUpperCase() : e.key.toLowerCase();
   //       handleInputButtonClick(char);
   //     }
@@ -162,7 +168,7 @@ function VirtualKeyBoard({ activeUser }) {
       <div className="screenDiv">
         <TabScreen
           text={stack}
-          setText={setStack} //to do
+          setText={setStack}
           searchQuery={searchQuery}
           cursorPosition={cursorPosition}
           focus={focus}
