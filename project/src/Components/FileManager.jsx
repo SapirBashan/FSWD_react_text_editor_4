@@ -73,21 +73,49 @@ function FileManager({ getText, setStackFromFile, activeUser, onLogout, setIsInp
   };
 
   return (
-    <div style={{ margin: '10px' }}>
-      <button onClick={save}>Save</button>
-      <button onClick={saveAs}>Save As</button>
-      <button onClick={open}>Open</button>
-      <button onClick={downloadPdf}>Export to PDF</button>
-      <button onClick={logout} style={{ marginLeft: '10px', backgroundColor: 'red', color: 'white' }}>Logout</button>
-      <input
-        type="text"
-        placeholder="File Name"
-        value={fileName}
-        onFocus={() => setIsInputFocused(true)}
-        onBlur={() => setIsInputFocused(false)}
-        onChange={(e) => setFileName(e.target.value)}
-        style={{ marginLeft: '10px' }}
-      />
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      padding: '10px',
+      backgroundColor: '#ADB5BD',
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+      zIndex: 1000,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center', // Added this to center horizontally
+      gap: '10px'
+    }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        maxWidth: '1200px', // Added max-width for better layout on wide screens
+        width: '100%',
+        justifyContent: 'center' // Center the inner content
+      }}>
+        <button 
+          onClick={logout} 
+          style={{ 
+            backgroundColor: '#27619c', 
+            color: 'white' 
+          }}
+        >Logout</button>
+
+        <button onClick={save}>Save</button>
+        <button onClick={saveAs}>Save As</button>
+        <button onClick={open}>Open</button>
+        <button onClick={downloadPdf}>Export to PDF</button>
+        <input
+          type="text"
+          placeholder="File Name"
+          value={fileName}
+          onFocus={() => setIsInputFocused(true)}
+          onBlur={() => setIsInputFocused(false)}
+          onChange={(e) => setFileName(e.target.value)}
+        />
+      </div>
     </div>
   );
 }

@@ -1,4 +1,8 @@
 import React from "react";
+import "./StyleSelector.css";
+import SearchBar from "./SearchBar";
+
+
 
 /**
  * StyleSelector Component
@@ -10,9 +14,8 @@ import React from "react";
 function StyleSelector({ onSelectStyle }) {
     return (
         <div className="style-selector">
-            <h4>Text Styles</h4>
-            <div>
-                <label>Font:</label>
+            <div className="style-control">
+                <label>Font Family</label>
                 <select onChange={(e) => onSelectStyle("fontFamily", e.target.value)}>
                     <option value="Arial">Arial</option>
                     <option value="Courier New">Courier New</option>
@@ -21,8 +24,9 @@ function StyleSelector({ onSelectStyle }) {
                     <option value="Verdana">Verdana</option>
                 </select>
             </div>
-            <div>
-                <label>Size:</label>
+
+            <div className="style-control">
+                <label>Font Size</label>
                 <select onChange={(e) => onSelectStyle("fontSize", e.target.value)}>
                     <option value="12px">12px</option>
                     <option value="16px">16px</option>
@@ -31,13 +35,16 @@ function StyleSelector({ onSelectStyle }) {
                     <option value="32px">32px</option>
                 </select>
             </div>
-            <div>
-                <label>Color:</label>
+
+            <div className="style-control">
+                <label>Text Color</label>
                 <input
                     type="color"
                     onChange={(e) => onSelectStyle("color", e.target.value)}
                 />
             </div>
+
+
         </div>
     );
 }

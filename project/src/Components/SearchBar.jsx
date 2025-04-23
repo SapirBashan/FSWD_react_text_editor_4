@@ -20,9 +20,9 @@ function searchTextAlgorithm(textArray, searchQuery) {
   return result;
 }
 
-function SearchBar({ searchQuery, setSearchQuery, Stack, setStack, focus }) {
-  const [isPopupOpen, setIsPopupOpen] = useState(false); // State to manage the pop-up visibility
-  const [newQuery, setNewQuery] = useState(searchQuery); // State to manage the new query input
+function SearchBar({ searchQuery, setSearchQuery, Stack, setStack, focus, setIsInputFocused }) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [newQuery, setNewQuery] = useState(searchQuery);
 
   // Function to handle opening the pop-up
   const openPopup = () => {
@@ -74,16 +74,17 @@ function SearchBar({ searchQuery, setSearchQuery, Stack, setStack, focus }) {
     setIsPopupOpen(false); // Close the pop-up
   };
 
-  return (
+   return (
     <div className="search-bar">
-      {/* Search input */}
+      {/* Search input with focus handlers */}
       <input
         type="text"
         placeholder="Search for a word..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
+        onFocus={() => setIsInputFocused(true)}
+        onBlur={() => setIsInputFocused(false)}
       />
-      {/* Button to open the pop-up */}
       <button onClick={openPopup} className="edit-query-button">
         Edit Query
       </button>
@@ -98,6 +99,8 @@ function SearchBar({ searchQuery, setSearchQuery, Stack, setStack, focus }) {
               onChange={(e) => setNewQuery(e.target.value)}
               rows="4"
               cols="30"
+              onFocus={() => setIsInputFocused(true)}
+              onBlur={() => setIsInputFocused(false)}
             />
             <div className="popup-buttons">
               <button onClick={saveNewQuery} className="save-button">
@@ -113,5 +116,6 @@ function SearchBar({ searchQuery, setSearchQuery, Stack, setStack, focus }) {
     </div>
   );
 }
+
 
 export default SearchBar;

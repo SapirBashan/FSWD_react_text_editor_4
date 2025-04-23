@@ -16,118 +16,135 @@ import '../css/KeyBoardStylee.css';
  * - Highlights the `searchQuery` in the text by applying a yellow background.
  * - Handles newline characters (`\n`) in the array by rendering a `<br />` element.
  */
-function Screen({ text, searchQuery, cursorPosition }) {
-  console.log(cursorPosition)
-  /**
-   * Highlights the search query in the text.
-   *
-   * @param {Array} textArray - The array of text objects to process.
-   * @returns {JSX.Element[]} - An array of JSX elements with the search query highlighted.
-   */
-  const highlightText = (textArray) => {
-    if (!searchQuery) {
-      // If no search query, render the text as-is
-      return textArray.map((item, index) =>
-        item.char === '\n' ? (<br key={index} />) : (<span key={index} style={item.style}>{item.char}</span>)
-      );
-    }
+import { useState } from 'react';
 
-    const queryLength = searchQuery.length; 
-    const result = [];
-    let buffer = ''; // Buffer to collect non-matching characters
-    let bufferStyle = null; // Style for the buffer
+function Screen({ text, searchQuery, cursorPosition, onSelectionChange }) {
+  const [selectionStart, setSelectionStart] = useState(null);
+  const [selectionEnd, setSelectionEnd] = useState(null);
+  const [isSelecting, setIsSelecting] = useState(false);
+  
 
-    for (let i = 0; i < textArray.length; i++) {
-      const { char, style } = textArray[i];
-
-      if (char === '\n') {
-        // If a newline character is encountered, add the buffer to the result
-        result.push(
-          <span key={`${i}-remaining`} style={bufferStyle}>
-            {buffer}
-          </span>
-        );
-        result.push(<br key={`${i}-newline`} />);
-        buffer = ''; // Reset the buffer
-        bufferStyle = null; // Reset the style
-        continue;
-      }
-
-      buffer += char;
-      bufferStyle = bufferStyle || style;
-
-
-      // Check if the buffer ends with the search query
-      if (buffer.slice(-queryLength).toLowerCase() === searchQuery.toLowerCase()) {
-        // Add non-highlighted part of the buffer
-        if (buffer.length > queryLength) {
-          const nonHighlighted = buffer.slice(0, -queryLength);
-          result.push(
-            <span key={`${i}-non`} style={bufferStyle}>
-              {nonHighlighted}
-            </span>
-          );
-        }
-
-        // Add the highlighted part
-        result.push(
-          <span
-            key={`${i}-highlight`}
-            style={{ ...style, backgroundColor: 'yellow' }}
-          >
-            {buffer.slice(-queryLength)}
-          </span>
-        );
-
-        // Reset the buffer
-        buffer = '';
-        bufferStyle = null;
-      }
-    }
-
-    // Add any remaining characters in the buffer
-    if (buffer) {
-      result.push(
-        <span key="remaining" style={bufferStyle}>
-          {buffer}
-        </span>
-      );
-    }
-
-    return result;
+  // Handle mouse down to start selection
+  const handleMouseDown = (index) => {
+    setSelectionStart(index);
+    setSelectionEnd(index);
+    setIsSelecting(true);
   };
 
 
-  const desplayCursor = (text) => {
-    const textJsx = highlightText(text); // Highlight the text
-    const result = []; // Array to hold the final JSX elements
 
-    // Iterate through the highlighted text and insert the cursor at the correct position
-    textJsx.forEach((element, index) => {
-      // If the cursorPosition matches the current index, insert the cursor
-      if (index === cursorPosition) {
-        result.push(
-          <span key="cursor" className="cursor"></span>
-        );
+  // Handle mouse move to extend selection
+  const handleMouseMove = (index) => {
+    if (isSelecting) {
+      setSelectionEnd(index);
+      if (onSelectionChange) {
+        onSelectionChange({
+          start: Math.min(selectionStart, index),
+          end: Math.max(selectionStart, index)
+        });
       }
+    }
+  };
 
-      result.push(element); // Add the current text element
+  // Handle mouse up to end selection
+  const handleMouseUp = (index) => {
+    if (isSelecting) {
+      setSelectionEnd(index);
+      setIsSelecting(false);
+      if (onSelectionChange) {
+        onSelectionChange({
+          start: Math.min(selectionStart, index),
+          end: Math.max(selectionStart, index)
+        });
+      }
+    }
+  };
 
+  // Highlight text with search and selection
+  // Inside the highlightText function, modify the isSearchMatch check:
+  // Inside the highlightText function, modify the isSearchMatch check:
+  const highlightText = (textArray) => {
+    if (!textArray) return [];
+    
+    return textArray.map((item, index) => {
+      const isSelected = selectionStart !== null && selectionEnd !== null && 
+                        index >= Math.min(selectionStart, selectionEnd) && 
+                        index <= Math.max(selectionStart, selectionEnd);
+      
+      let style = item.style || {};
+      
+      // Check if current position starts a match
+      const potentialMatch = textArray.slice(index, index + searchQuery?.length || 0)
+        .map(i => i.char)
+        .join('');
+      
+      const isMatchStart = searchQuery && 
+                          potentialMatch.toLowerCase() === searchQuery.toLowerCase();
+  
+      // If we're within a match range, highlight the character
+      const isWithinMatch = searchQuery && 
+                           Array.from({length: searchQuery.length})
+                             .some((_, offset) => {
+                               const matchStart = index - offset;
+                               if (matchStart < 0) return false;
+                               
+                               const substring = textArray.slice(matchStart, matchStart + searchQuery.length)
+                                 .map(i => i.char)
+                                 .join('');
+                               return substring.toLowerCase() === searchQuery.toLowerCase();
+                             });
+  
+      if (isWithinMatch) {
+        style = { ...style, backgroundColor: 'yellow' };
+      }
+  
+      if (isSelected) {
+        style = { ...style, backgroundColor: '#b5d5ff' };
+      }
+  
+      return item.char === '\n' ? (
+        <br key={index} />
+      ) : (
+        <span 
+          key={index} 
+          style={style}
+          onMouseDown={() => handleMouseDown(index)}
+          onMouseMove={() => handleMouseMove(index)}
+          onMouseUp={() => handleMouseUp(index)}
+        >
+          {item.char}
+        </span>
+      );
+    });
+  };
 
+  const displayCursor = (text) => {
+    const textJsx = highlightText(text);
+    const result = [];
+
+    textJsx.forEach((element, index) => {
+      if (index === cursorPosition) {
+        result.push(<span key="cursor" className="cursor"></span>);
+      }
+      result.push(element);
     });
 
-    // If the cursorPosition is at the end of the text, add the cursor at the end
     if (cursorPosition === text.length) {
-      result.push(
-        <span key="cursor-end" className="cursor"></span>
-      );
+      result.push(<span key="cursor-end" className="cursor"></span>);
     }
 
     return result;
   };
 
   if (Array.isArray(text)) {
-    return <div className="DivTextArea">{desplayCursor(text)}</div>;
+    return (
+      <div 
+        className="DivTextArea"
+        onMouseLeave={() => setIsSelecting(false)}
+      >
+        {displayCursor(text)}
+      </div>
+    );
   } else {
     return (
       <div className="DivTextArea">

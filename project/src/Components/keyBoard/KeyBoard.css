@@ -84,3 +84,30 @@
   #vk-board.lang-mkd .key.key-return {
     width: 82px;
   }
+
+  /* For text selection */
+.DivTextArea {
+  user-select: none; /* Prevent default browser selection */
+}
+
+/* Selection highlight */
+.DivTextArea span.selected {
+  background-color: #b5d5ff;
+}
+
+/* Selection controls */
+.selection-controls {
+  margin: 10px;
+  display: flex;
+  gap: 5px;
+}
+
+.selection-controls button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.selection-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
