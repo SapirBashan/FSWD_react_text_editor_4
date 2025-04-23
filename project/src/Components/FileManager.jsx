@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function FileManager({ getText, setStackFromFile, activeUser, onLogout }) {
+function FileManager({ getText, setStackFromFile, activeUser, onLogout, setIsInputFocused }) {
   const [fileName, setFileName] = useState('');
 
   const getStorageKey = (name) => `${activeUser}_${name}`;
@@ -83,6 +83,8 @@ function FileManager({ getText, setStackFromFile, activeUser, onLogout }) {
         type="text"
         placeholder="File Name"
         value={fileName}
+        onFocus={() => setIsInputFocused(true)}
+        onBlur={() => setIsInputFocused(false)}
         onChange={(e) => setFileName(e.target.value)}
         style={{ marginLeft: '10px' }}
       />
